@@ -1,0 +1,9 @@
+.table-card{background:#fff;border-radius:0 0 14px 14px;box-shadow:0 3px 8px rgba(23,38,62,.09);overflow:hidden}.table-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:1080px;font-size:14px}thead{border-bottom:1px solid var(--line)}
+th{height:50px;color:#565c65;text-align:left;padding:0 10px;white-space:nowrap;font-weight:650}th:first-child,td:first-child{padding-left:12px}
+.sort{color:#a4aab3;font-weight:400;margin-left:6px}.sort.selected{color:var(--blue)}.sort-button{display:flex;align-items:center;padding:0;border:0;background:transparent;font-weight:inherit;color:inherit;cursor:pointer}
+td{height:62px;padding:8px 10px;white-space:nowrap;color:#454b53}tbody tr:hover{background:#fafcff}td strong{display:block;color:#343a42;margin-bottom:4px}td small{display:block;color:#8a9098;font-size:12px}
+.receipt-code{font-weight:650;color:#2d333a}.number{text-align:right}.row-actions{display:flex;gap:7px}
+.table-action{width:32px;height:32px;border:0;border-radius:10px;display:grid;place-items:center;cursor:pointer}.table-action:hover{filter:brightness(.95);transform:translateY(-1px)}
+.table-action.cyan{color:#2388ad;background:#e6f5f9}.table-action.indigo{color:#3b61cd;background:#e9eefc}.table-action.blue{color:#326bd2;background:#e8f0fb}.table-action.red{color:#d95059;background:#fdebed}
+.empty-state{text-align:center;padding:55px;color:var(--muted)}

@@ -1,0 +1,295 @@
+:root {
+    --sidebar-width: 240px;
+    --blue: #3264dc;
+    --text: #22272f;
+    --muted: #747b85;
+    --line: #e9edf2;
+    --surface: #fff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+button, input, select {
+    font: inherit;
+}
+
+button {
+    color: inherit;
+}
+
+.icon {
+    display: block;
+    flex: 0 0 auto;
+}
+
+.app-shell {
+    min-height: 100vh;
+    background: #f8fafc;
+}
+
+.app-main {
+    margin-left: var(--sidebar-width);
+    transition: margin-left .25s ease;
+}
+
+.page-content {
+    padding: 28px 24px 36px 30px;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.search-box {
+    width: 310px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: 3px;
+    color: #252b31;
+}
+
+.search-box input {
+    width: 100%;
+    height: 42px;
+    border: 1px solid #e1e5ea;
+    border-radius: 14px;
+    padding: 0 15px;
+    font-size: 14px;
+    outline: none;
+    background: #fff;
+}
+
+.search-box input:focus, .product-filter:focus {
+    border-color: #7ca2ed;
+    box-shadow: 0 0 0 3px #e8effe;
+}
+
+.product-filter {
+    width: 190px;
+    height: 42px;
+    border: 1px solid #e1e5ea;
+    border-radius: 11px;
+    background: #fff;
+    padding: 0 13px;
+    font-size: 14px;
+    outline: none;
+}
+
+.toolbar-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.outline-button, .primary-button {
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.outline-button {
+    min-width: 82px;
+    border: 1px solid #e0e4e9;
+    background: #fff;
+    color: #505761;
+}
+
+.outline-button:hover {
+    background: #f7f9fb;
+}
+
+.primary-button {
+    min-width: 126px;
+    border: 0;
+    background: var(--blue);
+    color: #fff;
+    box-shadow: 0 5px 12px rgba(50, 100, 220, .22);
+}
+
+.primary-button:hover {
+    background: #2856c7;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 23px;
+}
+
+.pagination button {
+    min-width: 36px;
+    height: 40px;
+    border: 1px solid #e4e8ed;
+    background: #fff;
+    border-radius: 9px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: #767d86;
+}
+
+.pagination button.active {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
+}
+
+.pagination button:disabled {
+    opacity: .35;
+    cursor: default;
+}
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 22px;
+    background: rgba(25, 29, 33, .52);
+    backdrop-filter: blur(3px);
+}
+
+.modal-header {
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 34px;
+    border-bottom: 1px solid var(--line);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.modal-close {
+    border: 0;
+    background: transparent;
+    padding: 7px;
+    color: #60666e;
+    cursor: pointer;
+}
+
+.modal-footer {
+    min-height: 82px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding: 0 34px;
+    border-top: 1px solid var(--line);
+}
+
+.cancel-button, .save-button {
+    height: 42px;
+    min-width: 68px;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.cancel-button {
+    border: 1px solid #dfe3e8;
+    background: #fff;
+    color: #666c74;
+}
+
+.save-button {
+    border: 0;
+    background: var(--blue);
+    color: #fff;
+}
+
+.save-button:disabled {
+    opacity: .45;
+    cursor: default;
+}
+
+.sidebar-collapsed .app-main {
+    margin-left: 68px;
+}
+
+@media (max-width: 1100px) {
+    .toolbar {
+        flex-wrap: wrap
+    }
+
+    .toolbar-actions {
+        margin-left: 37px
+    }
+
+    .search-box {
+        flex: 1;
+        min-width: 300px
+    }
+}
+
+@media (max-width: 760px) {
+    :root {
+        --sidebar-width: 68px
+    }
+
+    .page-content {
+        padding: 24px 15px 35px
+    }
+
+    .toolbar {
+        gap: 10px;
+        margin-bottom: 22px
+    }
+
+    .search-box {
+        width: 100%;
+        min-width: 100%
+    }
+
+    .product-filter {
+        flex: 1;
+        min-width: 185px
+    }
+
+    .toolbar-actions {
+        margin-left: 0;
+        width: 100%
+    }
+
+    .outline-button {
+        flex: 1;
+        min-width: 0
+    }
+
+    .primary-button {
+        flex: 1.3;
+        min-width: 0
+    }
+}
+
+@media (max-width: 650px) {
+    .modal-backdrop {
+        padding: 0
+    }
+
+    .modal-header {
+        min-height: 68px;
+        padding: 0 18px
+    }
+
+    .modal-footer {
+        min-height: 70px;
+        padding: 0 18px
+    }
+}
