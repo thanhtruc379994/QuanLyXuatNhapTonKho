@@ -1,0 +1,3 @@
+.setting-entity-modal{width:min(440px,100%);overflow:hidden;background:#fff;border-radius:15px;box-shadow:0 24px 70px rgba(0,0,0,.25)}
+.setting-entity-body{padding:28px 34px}.setting-entity-body label{display:grid;gap:8px}.setting-entity-body span{font-size:14px;font-weight:600;color:#4b5159}
+.setting-entity-body input{height:43px;border:1px solid #dfe3e8;border-radius:8px;padding:0 12px;outline:none}.setting-entity-body input:focus{border-color:#7ca2ed;box-shadow:0 0 0 3px #e8effe}

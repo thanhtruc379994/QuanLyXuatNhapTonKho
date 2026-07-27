@@ -1,0 +1,5 @@
+.stock-toolbar{flex-wrap:nowrap}.stock-toolbar .search-box{min-width:250px}.date-filter{width:190px;height:42px;border:1px solid #e1e5ea;border-radius:10px;background:#fff;padding:0 12px;outline:none}
+.stock-toolbar .product-filter{min-width:180px}.stock-table{min-width:1050px}.stock-table td{height:55px}.stock-out{color:#cc5c62}.stock-closing{font-weight:700}
+.stock-status{display:inline-flex;padding:6px 12px;border-radius:999px;font-size:12px}.stock-status.empty{color:#a84549;background:#fde9ea}.stock-status.low{color:#9a7521;background:#fff6cd}.stock-status.normal{color:#267650;background:#e3f8ed}
+.stock-table tfoot{border-top:2px solid #dfe3e8;font-weight:700}.stock-table tfoot td{height:46px;background:#fbfcfd}
+@media(max-width:1250px){.stock-toolbar{flex-wrap:wrap}.stock-toolbar .toolbar-actions{margin-left:0}}
