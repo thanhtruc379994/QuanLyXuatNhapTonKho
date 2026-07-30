@@ -8,6 +8,7 @@ const paths = {
   menu: <><path d="M4 6h16M4 12h16M4 18h16"/></>,
   refresh: <><path d="M20 6v5h-5"/><path d="M4 18v-5h5"/><path d="M18.5 9A7 7 0 0 0 6.2 6.2L4 8m16 8-2.2 1.8A7 7 0 0 1 5.5 15"/></>,
   user: <><circle cx="12" cy="7" r="4"/><path d="M4 22a8 8 0 0 1 16 0"/></>,
+  logout: <><path d="M10 4H5v16h5"/><path d="M14 8l4 4-4 4M18 12H9"/></>,
   search: <><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></>,
   fileSpreadsheet: <><path d="M6 2h9l5 5v15H6Z"/><path d="M14 2v6h6M9 13h8M9 17h8M12 10v10"/></>,
   file: <><path d="M6 2h9l5 5v15H6Z"/><path d="M14 2v6h6"/></>,

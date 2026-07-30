@@ -10,7 +10,7 @@ const menuItems = [
   ['settings', 'Cài đặt'],
 ]
 
-export function Sidebar({ collapsed, activePage, onNavigate }) {
+export function Sidebar({ collapsed, activePage, onNavigate, username, onLogout }) {
   return (
     <aside className="sidebar">
       <div className="brand">
@@ -31,6 +31,13 @@ export function Sidebar({ collapsed, activePage, onNavigate }) {
           </button>
         ))}
       </nav>
+      <div className="sidebar-footer">
+        {!collapsed && <span className="sidebar-user">Đăng nhập: <strong>{username}</strong></span>}
+        <button type="button" className="sidebar-logout" onClick={onLogout} title="Đăng xuất">
+          <Icon name="logout" size={22} />
+          {!collapsed && <span>Đăng xuất</span>}
+        </button>
+      </div>
     </aside>
   )
 }

@@ -1,7 +1,7 @@
 import {useMemo, useState} from 'react'
 import {Icon} from './Icon'
-import {stockInventory} from '../data/stockInventory'
 import './style/StockPage.css'
+import {useWarehouse} from '../context/WarehouseContext'
 
 const money = new Intl.NumberFormat('vi-VN')
 const columns = [
@@ -40,20 +40,48 @@ function printPdf(rows) {
 }
 
 export function StockPage() {
+    const {stockRows, products, inboundRows, outboundRows} = useWarehouse()
     const [query, setQuery] = useState('')
     const [status, setStatus] = useState('all')
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
     const [sort, setSort] = useState({key: '', direction: 'asc'})
 
+    const periodStockRows = useMemo(() => {
+        if (!startDate && !endDate) return stockRows
+        const parseDate = (value) => {
+            const [day, month, year] = String(value).split('/').map(Number)
+            return year && month && day ? `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}` : ''
+        }
+        const sumBySku = (rows, sku, predicate) => rows
+            .filter((row) => row.sku === sku && predicate(parseDate(row.date)))
+            .reduce((sum, row) => sum + Number(row.quantity || 0), 0)
+        return products.map((product) => {
+            const beforeStart = (date) => startDate && date && date < startDate
+            const inPeriod = (date) => (!startDate || date >= startDate) && (!endDate || date <= endDate)
+            const opening = Number(product.openingStock || 0)
+                + sumBySku(inboundRows, product.code, beforeStart)
+                - sumBySku(outboundRows, product.code, beforeStart)
+            const imported = sumBySku(inboundRows, product.code, inPeriod)
+            const exported = sumBySku(outboundRows, product.code, inPeriod)
+            const closing = opening + imported - exported
+            const price = Number(product.importPrice || 0)
+            return {
+                code: product.code, name: product.name, unit: product.unit,
+                opening, imported, exported, closing, price, value: closing * price,
+                status: closing <= 0 ? 'Hết hàng' : closing <= 10 ? 'Sắp hết' : 'Bình thường',
+            }
+        })
+    }, [endDate, inboundRows, outboundRows, products, startDate, stockRows])
+
     const rows = useMemo(() => {
         const keyword = query.trim().toLocaleLowerCase('vi')
-        const filtered = stockInventory.filter((row) => (status === 'all' || row.status === status)
+        const filtered = periodStockRows.filter((row) => (status === 'all' || row.status === status)
             && (!keyword || `${row.code} ${row.name} ${row.unit}`.toLocaleLowerCase('vi').includes(keyword)))
         if (!sort.key) return filtered
         return [...filtered].sort((a, b) => String(a[sort.key]).localeCompare(String(b[sort.key]), 'vi', {numeric: true})
             * (sort.direction === 'asc' ? 1 : -1))
-    }, [query, sort, status])
+    }, [periodStockRows, query, sort, status])
     const totals = rows.reduce((sum, row) => ({
         opening: sum.opening + row.opening, imported: sum.imported + row.imported,
         exported: sum.exported + row.exported, closing: sum.closing + row.closing, value: sum.value + row.value,

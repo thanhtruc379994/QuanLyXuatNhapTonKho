@@ -10,6 +10,7 @@ const source = [
   ['SP006', 'Sản phẩm 6', 'Cây', 60000, 78000, 4, '', '9/8/2025', 'Đang bán'],
   ['SP007', 'Sản phẩm 7', 'Hộp', 30000, 39000, 5, '', '9/8/2025', 'Ngừng bán'],
   ['SP008', 'Sản phẩm 8', 'Chai', 25000, 33000, 9, '', '9/8/2025', 'Đang bán'],
+  ['SP009', 'Sản phẩm 9', 'Hộp', 30000, 39000, 18, '', '9/8/2025', 'Đang bán'],
 ]
 
 export const initialProducts = source.map((item) => ({

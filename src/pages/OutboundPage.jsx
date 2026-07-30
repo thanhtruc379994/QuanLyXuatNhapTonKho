@@ -3,14 +3,13 @@ import {Icon} from './Icon'
 import {ConfirmDialog} from './ConfirmDialog'
 import {ReceiptActionModal} from './ReceiptActionModal'
 import {OutboundModal} from './OutboundModal'
-import {outboundReceipts} from '../data/outboundReceipts'
 import {exportExcel,exportPdf,printWarehouseReceipt} from '../utils/exportInventory'
 import './style/OutboundPage.css'
-import {useIndexedDBCollection} from '../hooks/useIndexedDBCollection'
+import {useWarehouse} from '../context/WarehouseContext'
 
 const money=new Intl.NumberFormat('vi-VN')
 export function OutboundPage(){
-  const [rows,setRows]=useIndexedDBCollection('outboundReceipts',outboundReceipts)
+  const {outboundRows:rows,setOutboundRows:setRows}=useWarehouse()
   const [query,setQuery]=useState(''),[product,setProduct]=useState('all')
   const [addOpen,setAddOpen]=useState(false),[selected,setSelected]=useState(null),[deleting,setDeleting]=useState(null)
   const filtered=useMemo(()=>rows.filter((row)=>(product==='all'||row.product===product)&&(!query.trim()||`${row.code} ${row.product} ${row.sku} ${row.customer}`.toLocaleLowerCase('vi').includes(query.toLocaleLowerCase('vi')))),[product,query,rows])

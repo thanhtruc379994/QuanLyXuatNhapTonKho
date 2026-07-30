@@ -1,14 +1,18 @@
 import { useState } from 'react'
 import { Icon } from './Icon'
 import './style/ReceiptActionModal.css'
+import { useWarehouse } from '../context/WarehouseContext'
 
 const money = new Intl.NumberFormat('vi-VN')
 
 export function ReceiptActionModal({ receipt, mode, onClose, onSave, transactionType = 'Nhập' }) {
+  const { stockRows } = useWarehouse()
   const [quantity, setQuantity] = useState(receipt.quantity)
   const [price, setPrice] = useState(receipt.price)
   const isEdit = mode === 'edit'
   const isOutbound = transactionType === 'Xuất'
+  const available = (stockRows.find((row) => row.code === receipt.sku)?.closing || 0) + Number(receipt.quantity || 0)
+  const exceedsStock = isOutbound && quantity > available
   const total = isEdit ? quantity * price : receipt.quantity * receipt.price
 
   return (
@@ -31,11 +35,12 @@ export function ReceiptActionModal({ receipt, mode, onClose, onSave, transaction
             <label><span>Số lượng</span>{isEdit ? <input type="number" min="0" value={quantity} onChange={(event) => setQuantity(Math.max(0, Number(event.target.value)))} /> : <strong>{receipt.quantity}</strong>}</label>
             <label><span>Giá {transactionType.toLocaleLowerCase('vi')}</span>{isEdit ? <input type="number" min="0" value={price} onChange={(event) => setPrice(Math.max(0, Number(event.target.value)))} /> : <strong>{money.format(receipt.price)} ₫</strong>}</label>
             <label className="receipt-total"><span>Thành tiền</span><strong>{money.format(total)} ₫</strong></label>
+            {exceedsStock && <p className="password-message error">Số lượng xuất vượt tồn kho khả dụng ({available}).</p>}
           </div>
         </div>
         <footer className="modal-footer">
           <button type="button" className="cancel-button" onClick={onClose}>{isEdit ? 'Hủy' : 'Đóng'}</button>
-          {isEdit && <button type="button" className="save-button" onClick={() => onSave({ ...receipt, quantity, price })}>Lưu thay đổi</button>}
+          {isEdit && <button type="button" className="save-button" disabled={exceedsStock} onClick={() => onSave({ ...receipt, quantity, price })}>Lưu thay đổi</button>}
         </footer>
       </section>
     </div>
