@@ -1,13 +1,26 @@
 const DB_NAME = 'nhap-xuat-ton-kho'
-const DB_VERSION = 1
+const DB_VERSION = 2
 const STORE_NAME = 'collections'
 
 function openDatabase() {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION)
-    request.onupgradeneeded = () => {
-      if (!request.result.objectStoreNames.contains(STORE_NAME)) {
-        request.result.createObjectStore(STORE_NAME)
+    request.onupgradeneeded = (event) => {
+      const store = request.result.objectStoreNames.contains(STORE_NAME)
+        ? request.transaction.objectStore(STORE_NAME)
+        : request.result.createObjectStore(STORE_NAME)
+
+      if (event.oldVersion > 0 && event.oldVersion < 2) {
+        const productsRequest = store.get('products')
+        productsRequest.onsuccess = () => {
+          const products = productsRequest.result
+          if (!Array.isArray(products) || products.some((product) => product.code === 'SP009')) return
+          store.put([...products, {
+            id: 'SP009', code: 'SP009', name: 'Sản phẩm 9', unit: 'Hộp',
+            importPrice: 30000, exportPrice: 39000, openingStock: 18,
+            quota: '', createdAt: '9/8/2025', status: 'Đang bán',
+          }], 'products')
+        }
       }
     }
     request.onsuccess = () => resolve(request.result)

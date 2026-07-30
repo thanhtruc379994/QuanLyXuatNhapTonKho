@@ -11,26 +11,25 @@ import { OutboundPage } from '../OutboundPage.jsx'
 import { DashboardPage } from '../DashboardPage.jsx'
 import { SettingsPage } from '../SettingsPage.jsx'
 import { Icon } from '../Icon.jsx'
-import { inventoryReceipts } from '../../data/inventoryReceipts.js'
 import { exportExcel, exportPdf, printReceipt } from '../../utils/exportInventory.js'
-import { useIndexedDBCollection } from '../../hooks/useIndexedDBCollection.js'
+import { useWarehouse } from '../../context/WarehouseContext.jsx'
 import '../../App.css'
 
 const PAGE_SIZE = 10
 
-function App() {
+function App({ username, onLogout }) {
   const [collapsed, setCollapsed] = useState(false)
   const [query, setQuery] = useState('')
   const [product, setProduct] = useState('all')
   const [page, setPage] = useState(1)
-  const [rows, setRows] = useIndexedDBCollection('inboundReceipts', inventoryReceipts)
+  const { inboundRows: rows, setInboundRows: setRows, products } = useWarehouse()
   const [isEntryOpen, setIsEntryOpen] = useState(false)
   const [sort, setSort] = useState({ index: -1, direction: 'asc' })
   const [activePage, setActivePage] = useState('Dashboard')
   const [deleteReceipt, setDeleteReceipt] = useState(null)
   const [receiptAction, setReceiptAction] = useState(null)
 
-  const products = [...new Set(inventoryReceipts.map((item) => item.product))]
+  const productNames = products.map((item) => item.name)
   const filteredRows = useMemo(() => {
     const keyword = query.trim().toLocaleLowerCase('vi')
     const matched = rows.filter((row) => {
@@ -67,12 +66,13 @@ function App() {
 
   return (
     <div className={`app-shell ${collapsed ? 'sidebar-collapsed' : ''}`}>
-      <Sidebar collapsed={collapsed} activePage={activePage} onNavigate={(pageName) => {
+      <Sidebar collapsed={collapsed} activePage={activePage} username={username} onLogout={onLogout} onNavigate={(pageName) => {
         if (['Dashboard', 'Sản phẩm', 'Nhập kho', 'Xuất kho', 'Tồn kho', 'Cài đặt'].includes(pageName)) setActivePage(pageName)
       }} />
       <div className="app-main">
         <AppHeader
           title={activePage}
+          username={username}
           collapsed={collapsed}
           onMenuClick={() => setCollapsed((value) => !value)}
         />
@@ -93,7 +93,7 @@ function App() {
               onChange={(event) => updateFilter(setProduct)(event.target.value)}
             >
               <option value="all">Tất cả sản phẩm</option>
-              {products.map((item) => (
+              {productNames.map((item) => (
                 <option key={item}>{item}</option>
               ))}
             </select>

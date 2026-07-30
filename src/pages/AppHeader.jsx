@@ -1,7 +1,7 @@
 import { Icon } from './Icon'
 import './style/AppHeader.css'
 
-export function AppHeader({ onMenuClick, title }) {
+export function AppHeader({ onMenuClick, title, username }) {
   return (
     <header className="app-header">
       <div className="page-title">
@@ -11,10 +11,10 @@ export function AppHeader({ onMenuClick, title }) {
         <h1>{title}</h1>
       </div>
       <div className="account">
-        <button className="icon-button refresh-button" type="button" aria-label="Làm mới trang" onClick={() => window.location.reload()}>
-          <Icon name="refresh" size={25} />
-        </button>
-        <span>Xin chào, Admin</span>
+        {/*<button className="icon-button refresh-button" type="button" aria-label="Làm mới trang" onClick={() => window.location.reload()}>*/}
+        {/*  <Icon name="refresh" size={25} />*/}
+        {/*</button>*/}
+        <span>Xin chào, {username}</span>
         <Icon name="user" size={28} />
       </div>
     </header>

@@ -3,6 +3,8 @@ import { getCollection, saveCollection } from '../services/indexedDB'
 
 export function useIndexedDBCollection(key, initialValue) {
   const [data, setDataState] = useState(initialValue)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const dataRef = useRef(data)
 
   useEffect(() => {
@@ -11,7 +13,11 @@ export function useIndexedDBCollection(key, initialValue) {
       if (!active) return
       dataRef.current = storedValue
       setDataState(storedValue)
-    }).catch(() => {})
+    }).catch((reason) => {
+      if (active) setError(reason)
+    }).finally(() => {
+      if (active) setLoading(false)
+    })
     return () => { active = false }
   }, [key, initialValue])
 
@@ -19,8 +25,8 @@ export function useIndexedDBCollection(key, initialValue) {
     const resolved = typeof nextValue === 'function' ? nextValue(dataRef.current) : nextValue
     dataRef.current = resolved
     setDataState(resolved)
-    saveCollection(key, resolved).catch(() => {})
+    saveCollection(key, resolved).catch((reason) => setError(reason))
   }, [key])
 
-  return [data, setData]
+  return [data, setData, { loading, error }]
 }

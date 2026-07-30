@@ -1,10 +1,29 @@
 :root {
     --sidebar-width: 240px;
-    --blue: #3264dc;
-    --text: #22272f;
-    --muted: #747b85;
-    --line: #e9edf2;
-    --surface: #fff;
+    --ink: #1A1E26;
+    --ink-soft: #303845;
+    --ink-deep: #10131A;
+    --gold: #D3AD5F;
+    --gold-light: #E9C97C;
+    --gold-deep: #AD8337;
+    --gold-soft: #F8F0E2;
+    --gold-hover: #E2BF75;
+    --canvas: #FAF9F6;
+    --paper: #FFFFFF;
+    --on-ink: #FFFFFF;
+    --gold-text-light: #F4E4BE;
+    --ink-muted-light: #C8CED8;
+    --line: #E7E0D4;
+    --field-line: #D8D1C5;
+    --control-line: #D9D1C3;
+    --surface-hover: #FCF8EF;
+    --muted: #5B6470;
+    --success: #247A57;
+    --warning: #B7791F;
+    --error: #C0392B;
+    --surface: var(--paper);
+    --text: var(--ink);
+    --blue: var(--gold-deep);
 }
 
 * {
@@ -26,7 +45,8 @@ button {
 
 .app-shell {
     min-height: 100vh;
-    background: #f8fafc;
+    color: var(--ink);
+    background: var(--canvas);
 }
 
 .app-main {
@@ -52,31 +72,31 @@ button {
     align-items: center;
     gap: 12px;
     padding-left: 3px;
-    color: #252b31;
+    color: var(--ink-soft);
 }
 
 .search-box input {
     width: 100%;
     height: 42px;
-    border: 1px solid #e1e5ea;
+    border: 1px solid var(--field-line);
     border-radius: 14px;
     padding: 0 15px;
     font-size: 14px;
     outline: none;
-    background: #fff;
+    background: var(--paper);
 }
 
 .search-box input:focus, .product-filter:focus {
-    border-color: #7ca2ed;
-    box-shadow: 0 0 0 3px #e8effe;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-soft);
 }
 
 .product-filter {
     width: 190px;
     height: 42px;
-    border: 1px solid #e1e5ea;
+    border: 1px solid var(--field-line);
     border-radius: 11px;
-    background: #fff;
+    background: var(--paper);
     padding: 0 13px;
     font-size: 14px;
     outline: none;
@@ -101,25 +121,26 @@ button {
 
 .outline-button {
     min-width: 82px;
-    border: 1px solid #e0e4e9;
-    background: #fff;
-    color: #505761;
+    border: 1px solid var(--control-line);
+    background: var(--paper);
+    color: var(--ink-soft);
 }
 
 .outline-button:hover {
-    background: #f7f9fb;
+    border-color: var(--gold);
+    background: var(--surface-hover);
 }
 
 .primary-button {
     min-width: 126px;
     border: 0;
-    background: var(--blue);
-    color: #fff;
-    box-shadow: 0 5px 12px rgba(50, 100, 220, .22);
+    background: var(--ink);
+    color: var(--on-ink);
+    box-shadow: 0 5px 14px rgba(16, 19, 26, .18);
 }
 
 .primary-button:hover {
-    background: #2856c7;
+    background: var(--ink-soft);
 }
 
 .pagination {
@@ -132,19 +153,19 @@ button {
 .pagination button {
     min-width: 36px;
     height: 40px;
-    border: 1px solid #e4e8ed;
-    background: #fff;
+    border: 1px solid var(--line);
+    background: var(--paper);
     border-radius: 9px;
     display: grid;
     place-items: center;
     cursor: pointer;
-    color: #767d86;
+    color: var(--muted);
 }
 
 .pagination button.active {
-    background: var(--blue);
-    color: #fff;
-    border-color: var(--blue);
+    background: var(--ink);
+    color: var(--gold-text-light);
+    border-color: var(--ink);
 }
 
 .pagination button:disabled {
@@ -159,7 +180,7 @@ button {
     display: grid;
     place-items: center;
     padding: 22px;
-    background: rgba(25, 29, 33, .52);
+    background: rgba(16, 19, 26, .58);
     backdrop-filter: blur(3px);
 }
 
@@ -181,7 +202,7 @@ button {
     border: 0;
     background: transparent;
     padding: 7px;
-    color: #60666e;
+    color: var(--muted);
     cursor: pointer;
 }
 
@@ -203,15 +224,212 @@ button {
 }
 
 .cancel-button {
-    border: 1px solid #dfe3e8;
-    background: #fff;
-    color: #666c74;
+    border: 1px solid var(--control-line);
+    background: var(--paper);
+    color: var(--muted);
 }
 
 .save-button {
     border: 0;
-    background: var(--blue);
-    color: #fff;
+    background: var(--ink);
+    color: var(--on-ink);
+}
+
+.save-button:hover:not(:disabled),
+.change-password-button:hover,
+.settings-card>header button:hover {
+    background: var(--ink-soft);
+}
+
+button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+
+/* Brand palette normalization for page-level components. */
+.sidebar {
+    background: var(--ink);
+    border-right-color: var(--ink-deep);
+}
+
+.brand {
+    color: var(--gold-light);
+    border-bottom-color: var(--ink-soft);
+}
+
+.sidebar-nav button {
+    color: var(--ink-muted-light);
+}
+
+.sidebar-nav button:hover {
+    color: var(--on-ink);
+    background: var(--ink-soft);
+}
+
+.sidebar-nav button.active {
+    color: var(--gold-text-light);
+    background: rgba(211, 173, 95, .16);
+}
+
+.app-header {
+    background: rgba(255, 255, 255, .96);
+    border-bottom-color: var(--line);
+}
+
+.icon-button:hover {
+    background: var(--gold-soft);
+}
+
+.page-title h1 {
+    color: var(--ink);
+}
+
+.account {
+    color: var(--muted);
+}
+
+.refresh-button {
+    color: var(--ink-soft);
+    border-color: var(--line);
+}
+
+.table-card,
+.dashboard-panel,
+.kpi-card,
+.settings-card,
+.stock-modal,
+.product-modal,
+.outbound-modal,
+.receipt-action-modal,
+.setting-entity-modal,
+.confirm-dialog {
+    background: var(--paper);
+    box-shadow: 0 8px 24px rgba(16, 19, 26, .07);
+}
+
+.kpi-card {
+    border-top-color: var(--gold);
+}
+
+.dashboard-panel h3:before,
+.settings-card h3:before {
+    background: var(--gold-deep);
+}
+
+th {
+    color: var(--ink-soft);
+    background: var(--gold-soft);
+}
+
+td,
+td strong,
+.receipt-code {
+    color: var(--ink-soft);
+}
+
+tbody tr:hover {
+    background: var(--surface-hover);
+}
+
+.sort.selected,
+.receipt-total strong {
+    color: var(--gold-deep);
+}
+
+.settings-card>header button,
+.change-password-button {
+    background: var(--ink);
+    color: var(--on-ink);
+}
+
+.add-product:hover,
+.cancel-button:hover {
+    border-color: var(--gold);
+    background: var(--surface-hover);
+}
+
+.edit-setting,
+.table-action.indigo,
+.table-action.blue,
+.table-action.cyan {
+    color: var(--gold-deep);
+    background: var(--gold-soft);
+}
+
+.delete-setting,
+.table-action.red,
+.delete-button {
+    color: var(--on-ink);
+    background: var(--error);
+}
+
+.status-badge.selling,
+.stock-status.normal,
+.positive,
+.password-message {
+    color: var(--success) !important;
+    background: #E7F3ED;
+}
+
+.status-badge.stopped,
+.stock-status.empty,
+.negative,
+.password-message.error {
+    color: var(--error) !important;
+    background: #F9E9E6;
+}
+
+.stock-status.low {
+    color: var(--warning);
+    background: var(--gold-soft);
+}
+
+.form-grid input,
+.form-grid select,
+.product-line input,
+.product-line select,
+.product-form input,
+.product-form select,
+.receipt-numbers input,
+.setting-entity-body input,
+.password-card input,
+.note-field textarea,
+.date-filter {
+    border-color: var(--field-line);
+    background: var(--paper);
+}
+
+.form-grid input:focus,
+.form-grid select:focus,
+.product-line input:focus,
+.product-line select:focus,
+.product-form input:focus,
+.product-form select:focus,
+.receipt-numbers input:focus,
+.setting-entity-body input:focus,
+.password-card input:focus,
+.note-field textarea:focus,
+.date-filter:focus {
+    border-color: var(--gold);
+    box-shadow: none;
+}
+
+input,
+select,
+textarea {
+    border-width: 1px;
+    outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    border-color: var(--gold);
+    outline: none;
+    box-shadow: none !important;
 }
 
 .save-button:disabled {

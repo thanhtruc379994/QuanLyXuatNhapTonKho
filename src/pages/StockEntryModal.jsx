@@ -1,23 +1,27 @@
 import { useEffect, useState } from 'react'
 import { Icon } from './Icon'
 import './style/StockEntryModal.css'
+import { useWarehouse } from '../context/WarehouseContext'
 
-const products = [
-  ['Sản phẩm 1', 'SP001', 10000], ['Sản phẩm 2', 'SP002', 20000],
-  ['Sản phẩm 4', 'SP004', 10000], ['Sản phẩm 9', 'SP009', 30000],
-  ['Sản phẩm 10', 'SP010', 30000], ['Sản phẩm 11', 'SP011', 30000],
-].map(([name, sku, price]) => ({ name, sku, price }))
-
-const createLine = (productIndex = 0) => ({
-  key: `${Date.now()}-${Math.random()}`, productIndex, quantity: 1, price: products[productIndex].price,
+const createLine = (products, productIndex = 0) => ({
+  key: `${Date.now()}-${Math.random()}`,
+  productIndex,
+  quantity: 1,
+  price: products[productIndex]?.importPrice || 0,
 })
+const localDateTime = () => {
+  const now = new Date()
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset())
+  return now.toISOString().slice(0, 16)
+}
 
 export function StockEntryModal({ onClose, onSave }) {
+  const { products: allProducts, suppliers } = useWarehouse()
+  const products = allProducts.filter((product) => product.status === 'Đang bán')
   const [supplier, setSupplier] = useState('')
   const [note, setNote] = useState('')
-  const [lines, setLines] = useState([
-    { ...createLine(0), quantity: 2 }, { ...createLine(0), quantity: 3 }, { ...createLine(1), quantity: 4 },
-  ])
+  const [entryDate, setEntryDate] = useState(localDateTime)
+  const [lines, setLines] = useState(() => products.length ? [createLine(products)] : [])
 
   useEffect(() => {
     const closeOnEscape = (event) => event.key === 'Escape' && onClose()
@@ -33,17 +37,17 @@ export function StockEntryModal({ onClose, onSave }) {
     if (line.key !== key) return line
     if (field === 'productIndex') {
       const productIndex = Number(value)
-      return { ...line, productIndex, price: products[productIndex].price }
+      return { ...line, productIndex, price: products[productIndex].importPrice }
     }
     return { ...line, [field]: Math.max(0, Number(value)) }
   }))
 
   const save = () => {
-    const now = new Date()
-    const code = `NK${now.toISOString().slice(0, 10).replaceAll('-', '')}_${String(Date.now()).slice(-3)}`
+    const now = new Date(entryDate)
+    const code = `NK${entryDate.slice(0, 10).replaceAll('-', '')}_${String(Date.now()).slice(-3)}`
     onSave(lines.map((line, index) => ({
       id: Date.now() + index, code, date: now.toLocaleDateString('vi-VN'),
-      product: products[line.productIndex].name, sku: products[line.productIndex].sku,
+      product: products[line.productIndex].name, sku: products[line.productIndex].code,
       quantity: line.quantity, price: line.price, supplier, note,
     })))
   }
@@ -57,9 +61,10 @@ export function StockEntryModal({ onClose, onSave }) {
         </header>
         <div className="modal-body">
           <div className="form-grid">
-            <label><span>Ngày nhập</span><div className="date-field"><input type="datetime-local" defaultValue="2025-09-15T20:11" /><Icon name="calendar" size={18} /></div></label>
+            <label><span>Ngày nhập</span><div className="date-field"><input type="datetime-local" value={entryDate} onChange={(event) => setEntryDate(event.target.value)} /><Icon name="calendar" size={18} /></div></label>
             <label><span>Nhà cung cấp</span><select value={supplier} onChange={(event) => setSupplier(event.target.value)}>
-              <option value="">Chọn nhà cung cấp</option><option>Nhà cung cấp 02</option><option>Nhà cung cấp 03</option><option>Nhà cung cấp 07</option>
+              <option value="">Chọn nhà cung cấp</option>
+              {suppliers.map((name) => <option key={name}>{name}</option>)}
             </select></label>
           </div>
           <label className="products-label">Sản phẩm *</label>
@@ -68,7 +73,7 @@ export function StockEntryModal({ onClose, onSave }) {
             {lines.map((line) => (
               <div className="product-line" key={line.key}>
                 <select value={line.productIndex} onChange={(event) => updateLine(line.key, 'productIndex', event.target.value)}>
-                  {products.map((product, index) => <option value={index} key={product.sku}>{product.name} ({product.sku})</option>)}
+                  {products.map((product, index) => <option value={index} key={product.code}>{product.name} ({product.code})</option>)}
                 </select>
                 <input type="number" min="0" value={line.quantity} onChange={(event) => updateLine(line.key, 'quantity', event.target.value)} />
                 <input type="number" min="0" value={line.price} onChange={(event) => updateLine(line.key, 'price', event.target.value)} />
@@ -76,13 +81,13 @@ export function StockEntryModal({ onClose, onSave }) {
                 <button type="button" className="remove-product" onClick={() => setLines((items) => items.filter((item) => item.key !== line.key))} aria-label="Xóa sản phẩm"><Icon name="trash" size={19} /></button>
               </div>
             ))}
-            <button type="button" className="add-product" onClick={() => setLines((items) => [...items, createLine()])}><Icon name="plus" size={20} /> Thêm sản phẩm</button>
+            <button type="button" className="add-product" disabled={!products.length} onClick={() => setLines((items) => [...items, createLine(products)])}><Icon name="plus" size={20} /> Thêm sản phẩm</button>
           </div>
           <label className="note-field"><span>Ghi chú</span><textarea value={note} onChange={(event) => setNote(event.target.value)} /></label>
         </div>
         <footer className="modal-footer">
           <button type="button" className="cancel-button" onClick={onClose}>Hủy</button>
-          <button type="button" className="save-button" onClick={save} disabled={!lines.length}>Lưu</button>
+          <button type="button" className="save-button" onClick={save} disabled={!lines.length || !entryDate}>Lưu</button>
         </footer>
       </section>
     </div>

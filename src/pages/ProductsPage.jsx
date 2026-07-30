@@ -1,10 +1,9 @@
 import { useMemo, useState } from 'react'
 import { Icon } from './Icon'
 import { ProductModal } from './ProductModal'
-import { initialProducts } from '../data/products'
 import { ConfirmDialog } from './ConfirmDialog'
 import './style/ProductsPage.css'
-import { useIndexedDBCollection } from '../hooks/useIndexedDBCollection'
+import { useWarehouse } from '../context/WarehouseContext'
 
 const PAGE_SIZE = 10
 const columns = [
@@ -15,7 +14,7 @@ const columns = [
 const money = new Intl.NumberFormat('vi-VN')
 
 export function ProductsPage() {
-  const [products, setProducts] = useIndexedDBCollection('products', initialProducts)
+  const { products, setProducts, inboundRows, outboundRows } = useWarehouse()
   const [query, setQuery] = useState('')
   const [status, setStatus] = useState('all')
   const [page, setPage] = useState(1)
@@ -67,10 +66,17 @@ export function ProductsPage() {
       {deleteProduct && <ConfirmDialog
         message={`Bạn có chắc muốn xóa sản phẩm “${deleteProduct.name}” (${deleteProduct.code})? Hành động này không thể hoàn tác.`}
         onCancel={() => setDeleteProduct(null)}
-        onConfirm={() => {
-          setProducts((list) => list.filter((item) => item.id !== deleteProduct.id))
-          setDeleteProduct(null)
-        }}
+          onConfirm={() => {
+            const hasTransactions = inboundRows.some((row) => row.sku === deleteProduct.code)
+              || outboundRows.some((row) => row.sku === deleteProduct.code)
+            if (hasTransactions) {
+              setProducts((list) => list.map((item) => item.id === deleteProduct.id ? { ...item, status: 'Ngừng bán' } : item))
+              setDeleteProduct(null)
+              return
+            }
+            setProducts((list) => list.filter((item) => item.id !== deleteProduct.id))
+            setDeleteProduct(null)
+          }}
       />}
     </main>
   )
