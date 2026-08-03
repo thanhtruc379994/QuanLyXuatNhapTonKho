@@ -1,22 +1,21 @@
 import { Icon } from './Icon'
 import './style/AppHeader.css'
+import { AppBar, Toolbar, IconButton, Typography, Box, Avatar } from '@mui/material'
 
 export function AppHeader({ onMenuClick, title, username }) {
   return (
-    <header className="app-header">
+    <AppBar position="static" color="inherit" elevation={0} sx={{borderBottom:'1px solid #E7E0D4'}}><Toolbar sx={{justifyContent:'space-between'}}>
       <div className="page-title">
-        <button className="icon-button menu-button" type="button" onClick={onMenuClick} aria-label="Thu gọn menu">
+        <IconButton onClick={onMenuClick} aria-label="Thu gọn menu">
           <Icon name="menu" size={26} />
-        </button>
-        <h1>{title}</h1>
+        </IconButton><Typography variant="h5" fontWeight={700}>{title}</Typography>
       </div>
-      <div className="account">
+      <Box sx={{display:'flex',alignItems:'center',gap:1,color:'#5B6470'}}>
         {/*<button className="icon-button refresh-button" type="button" aria-label="Làm mới trang" onClick={() => window.location.reload()}>*/}
         {/*  <Icon name="refresh" size={25} />*/}
         {/*</button>*/}
         <span>Xin chào, {username}</span>
-        <Icon name="user" size={28} />
-      </div>
-    </header>
+        <Avatar sx={{width:32,height:32,bgcolor:'#D3AD5F',color:'#1A1E26'}}><Icon name="user" size={20}/></Avatar></Box>
+    </Toolbar></AppBar>
   )
 }
