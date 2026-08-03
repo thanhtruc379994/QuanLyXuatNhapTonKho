@@ -1,4 +1,5 @@
 import './style/ConfirmDialog.css'
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material'
 
 export function ConfirmDialog({
                                   title = 'Xác nhận xóa',
@@ -6,23 +7,5 @@ export function ConfirmDialog({
                                   onCancel,
                                   onConfirm,
                               }) {
-    return (
-        <div
-            className="modal-backdrop confirm-backdrop"
-            onMouseDown={(event) => event.target === event.currentTarget && onCancel()}
-        >
-            <section className="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title">
-                <button className="confirm-close" type="button" onClick={onCancel} aria-label="Đóng">
-                    {/*<Icon name="close" size={20}/>*/}
-                </button>
-                {/*<div className="confirm-icon"><Icon name="trash" size={27}/></div>*/}
-                <h2 id="confirm-title">{title}</h2>
-                <p>{message}</p>
-                <div className="confirm-actions">
-                    <button type="button" className="cancel-button" onClick={onCancel}>Hủy</button>
-                    <button type="button" className="delete-button" onClick={onConfirm}>Xóa</button>
-                </div>
-            </section>
-        </div>
-    )
+    return <Dialog open onClose={onCancel} maxWidth="xs" fullWidth><DialogTitle>{title}</DialogTitle><DialogContent><Typography color="text.secondary">{message}</Typography></DialogContent><DialogActions sx={{p:2}}><Button onClick={onCancel}>Hủy</Button><Button color="error" variant="contained" onClick={onConfirm}>Xóa</Button></DialogActions></Dialog>
 }

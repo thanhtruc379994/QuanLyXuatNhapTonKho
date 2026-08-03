@@ -441,6 +441,31 @@ textarea:focus-visible {
     margin-left: 68px;
 }
 
+/* MUI-inspired content surfaces shared by every feature page. */
+.page-content, .settings-page, .dashboard-page { padding: 28px 32px 40px; }
+.toolbar { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(16,19,26,.04); }
+.search-box input, .product-filter, .date-filter { border-radius: 8px; height: 40px; border-color: #c8cdd5; }
+.outline-button, .primary-button { height: 40px; border-radius: 8px; font-weight: 600; transition: all .2s; }
+.primary-button { background: #1A1E26; }
+.table-card, .dashboard-panel, .settings-card, .kpi-card { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 10px rgba(16,19,26,.05); }
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: separate; border-spacing: 0; }
+th { position: sticky; top: 0; z-index: 1; padding: 13px 16px; font-size: 12px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; background: #f7f3ea; border-bottom: 1px solid var(--line); }
+td { padding: 13px 16px; border-bottom: 1px solid #eeeae3; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+.row-actions { display: flex; gap: 6px; }
+.table-action { width: 32px; height: 32px; border: 0; border-radius: 7px; display: grid; place-items: center; cursor: pointer; transition: transform .15s; }
+.table-action:hover { transform: translateY(-1px); }
+.status-badge, .stock-status { display: inline-flex; align-items: center; border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 600; }
+.pagination button { border-radius: 8px; }
+.settings-page { background: var(--canvas); min-height: calc(100vh - 72px); }
+.settings-grid { max-width: 1200px; margin: auto; }
+.settings-card { padding: 0; }
+.settings-card > header { padding: 18px 22px; }
+.settings-list > div { padding: 12px 22px; border-top: 1px solid #eeeae3; }
+.dashboard-page { max-width: 1600px; margin: auto; }
+.kpi-card { padding: 20px; }
+
 @media (max-width: 1100px) {
     .toolbar {
         flex-wrap: wrap
